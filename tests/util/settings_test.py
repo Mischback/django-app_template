@@ -53,7 +53,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
 ]
 
-ROOT_URLCONF = "tests.util.urls"
+ROOT_URLCONF = "tests.util.urls_test"
 
 TEMPLATES = [
     {
