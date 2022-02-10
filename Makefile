@@ -16,10 +16,12 @@
 # ### INTERNAL SETTINGS / CONSTANTS
 TOX_WORK_DIR := .tox
 TOX_DJANGO_ENV := $(TOX_WORK_DIR)/django
-TOX_UTIL_ENV := $(TOX_WORK_DIR)/util
+TOX_SPHINX_ENV := $(TOX_WORK_DIR)/sphinx
 TOX_TEST_ENV := $(TOX_WORK_DIR)/testing
+TOX_UTIL_ENV := $(TOX_WORK_DIR)/util
 
 DEVELOPMENT_REQUIREMENTS := requirements/common.txt requirements/coverage.txt requirements/development.txt
+DOCUMENTATION_REQUIREMENTS := requirements/common.txt requirements/documentation.txt docs/source/conf.py
 UTIL_REQUIREMENTS := requirements/coverage.txt requirements/util.txt
 
 # some make settings
@@ -192,15 +194,39 @@ util/pre-commit/update : $(TOX_UTIL_ENV)
 .PHONY : util/pre-commit/update
 
 
+# ### Sphinx-related commands
+
+## Build the documentation using "Sphinx"
+## @category Development
+sphinx/build/html : $(TOX_SPHINX_ENV)
+	tox -q -e sphinx
+.PHONY : sphinx/build/html
+
+## Serve the documentation locally on port 8082
+## @category Development
+sphinx/serve/html : sphinx/build/html
+	tox -q -e sphinx-serve
+.PHONY : sphinx/serve/html
+
+## Check documentation's external links
+## @category Development
+sphinx/linkcheck : $(TOX_SPHINX_ENV)
+	tox -q -e sphinx -- make linkcheck
+.PHONY : sphinx/linkcheck
+
+
 # ### INTERNAL RECIPES
 $(TOX_DJANGO_ENV) : $(DEVELOPMENT_REQUIREMENTS) pyproject.toml
 	tox --recreate -e django
 
-$(TOX_UTIL_ENV) : $(UTIL_REQUIREMENTS) pyproject.toml .pre-commit-config.yaml
-	tox --recreate -e util
+$(TOX_SPHINX_ENV) : $(DOCUMENTATION_REQUIREMENTS) pyproject.toml
+	tox --recreate -e sphinx
 
 $(TOX_TEST_ENV) : $(DEVELOPMENT_REQUIREMENTS) pyproject.toml
 	tox --recreate -e testing
+
+$(TOX_UTIL_ENV) : $(UTIL_REQUIREMENTS) pyproject.toml .pre-commit-config.yaml
+	tox --recreate -e util
 
 
 # fancy colors
