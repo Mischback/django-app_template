@@ -28,8 +28,6 @@ exclude =
     .tox,
     docs/source/conf.py,
     migrations,
-    settings_dev.py,
-    settings_test.py,
 
 # Actually, try to stay below 80 characters for docstrings.
 # But enforcing this does not work, when linking to other classes / attributes

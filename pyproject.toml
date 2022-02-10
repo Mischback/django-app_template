@@ -108,10 +108,8 @@ import_heading_firstparty = "app imports"
 import_heading_localfolder = "local imports"
 import_heading_thirdparty = "external imports"
 skip_glob = [
-  ".env",
   ".tox",
-  "*/migrations/*",
-  "settings_dev.py"
+  "*/migrations/*"
 ]
 
 
@@ -163,7 +161,7 @@ setenv =
   PYTHONDONTWRITEBYTECODE=1
 skip_install = true
 commands =
-  django-admin {posargs:version} --settings=tests.util.settings_dev --pythonpath=./
+  django-admin {posargs:version} --settings=dev_env.settings --pythonpath=./
 
 [testenv:djangosuperuser]
 basepython = {[testenv:django]basepython}
@@ -176,7 +174,7 @@ setenv =
   DJANGO_SUPERUSER_PASSWORD=foobar
 skip_install = {[testenv:django]skip_install}
 commands =
-  django-admin createsuperuser --noinput --settings=tests.util.settings_dev --pythonpath=./
+  django-admin createsuperuser --noinput --settings=dev_env.settings --pythonpath=./
 
 [testenv:installation]
 basepython = {[testenv:util]basepython}
