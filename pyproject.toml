@@ -58,17 +58,11 @@ omit = [
   "*/tests/runtests.py"
 ]
 parallel = true
-plugins = [
-  "django_coverage_plugin"
-]
 
 [tool.coverage.report]
 precision = 1
 show_missing = true
 fail_under = 95
-
-[tool.coverage.django_coverage_plugin]
-template_extensions = "html"
 
 
 # ### DJLINT ###
