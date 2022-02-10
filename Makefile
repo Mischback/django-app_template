@@ -15,8 +15,10 @@
 
 # ### INTERNAL SETTINGS / CONSTANTS
 TOX_WORK_DIR := .tox
+TOX_DJANGO_ENV := $(TOX_WORK_DIR)/django
 TOX_UTIL_ENV := $(TOX_WORK_DIR)/util
 
+DEVELOPMENT_REQUIREMENTS := requirements/common.txt requirements/coverage.txt requirements/development.txt
 UTIL_REQUIREMENTS := requirements/coverage.txt requirements/util.txt
 
 # some make settings
@@ -26,6 +28,74 @@ UTIL_REQUIREMENTS := requirements/coverage.txt requirements/util.txt
 MAKEFLAGS += --no-print-directory
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
+
+
+# ### Django management commands
+
+django_command ?= "version"
+django : $(TOX_DJANGO_ENV)
+	tox -q -e django -- $(django_command)
+.PHONY : django
+
+## "$ django-admin check"; runs the project's checks
+## @category Django
+django/check :
+	$(MAKE) django django_command="check"
+.PHONY : django/check
+
+## "$ django-admin clearsessions"; clears the session from the backend
+## @category Django
+django/clearsessions :
+	$(MAKE) django django_command="clearsessions"
+.PHONY : django/clearsessions
+
+## "$ django-admin compilemessages"; compiles the app's *.po files to *.mo
+## @category Django
+django/compilemessages :
+	$(MAKE) django django_command="compilemessages --ignore=.tox --ignore=tests --ignore=docs"
+.PHONY : django/compilemessages
+
+## create a superuser account with username: "admin" and password: "foobar"
+## @category Django
+django/createsuperuser :
+	tox -q -e djangosuperuser
+.PHONY : django/createsuperuser
+
+## "$ django-admin makemessages"; collect the app's localizable strings into *.po
+## @category Django
+django/makemessages :
+	$(MAKE) django django_command="makemessages --locale=en --locale=de --ignore=.tox --ignore=tests --ignore=docs"
+.PHONY : django/makemessages
+
+# Create the migrations for the app to be developed!
+# TODO: The app name is hardcoded here!
+## "$ django-admin makemigrations"; create migrations
+## @category Django
+django/makemigrations :
+	$(MAKE) django django_command="makemigrations calingen"
+.PHONY : django/makemigrations
+
+## "$ django-admin migrate"; apply the project's migrations
+## @category Django
+django/migrate :
+	$(MAKE) django django_command="migrate"
+.PHONY : django/migrate
+
+host_port ?= "0:8000"
+## "django-admin runserver"; runs Django's development server with host = "0"
+## and port = "8000".
+## Host and port might be specified by "make django/runserver host_port="0:4444"
+## to run the server on port "4444".
+## @category Django
+django/runserver : django/migrate django/clearsessions
+	$(MAKE) django django_command="runserver $(host_port)"
+.PHONY : django/runserver
+
+## "django-admin shell"; run a REPL with the project's settings
+## @category Django
+django/shell :
+	$(MAKE) django django_command="shell"
+.PHONY : django/shell
 
 
 # ### utility targets
@@ -88,6 +158,9 @@ util/pre-commit/update : $(TOX_UTIL_ENV)
 
 
 # ### INTERNAL RECIPES
+$(TOX_DJANGO_ENV) : $(DEVELOPMENT_REQUIREMENTS) pyproject.toml
+	tox --recreate -e django
+
 $(TOX_UTIL_ENV) : $(UTIL_REQUIREMENTS) pyproject.toml .pre-commit-config.yaml
 	tox --recreate -e util
 
