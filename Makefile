@@ -45,6 +45,13 @@ clean :
 .PHONY : clean
 
 
+## Verify that the packaged app can be installed; used during CI only
+## @category CI
+ci/test/installation :
+	tox -q -e installation
+.PHONY : ci/test/installation
+
+
 ## Run tests to collect and show coverage information
 ## @category Development
 dev/coverage : clean dev/test
@@ -192,6 +199,23 @@ util/pre-commit/install : $(TOX_UTIL_ENV)
 util/pre-commit/update : $(TOX_UTIL_ENV)
 	tox -q -e util -- pre-commit autoupdate
 .PHONY : util/pre-commit/update
+
+flit_argument ?= "--version"
+util/flit : $(TOX_UTIL_ENV)
+	tox -q -e util -- flit $(flit_argument)
+.PHONY : util/flit
+
+## Use "flit" to build a PyPI-compatible package
+## @category Utility
+util/flit/build :
+	$(MAKE) util/flit flit_argument="build"
+.PHONY : util/flit/build
+
+## Use "flit" to publish the package to PyPI
+## @category Utility
+util/flit/publish :
+	$(MAKE) util/flit flit_argument="publish"
+.PHONY : util/flit/publish
 
 
 # ### Sphinx-related commands
