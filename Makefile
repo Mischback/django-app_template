@@ -17,6 +17,7 @@
 TOX_WORK_DIR := .tox
 TOX_DJANGO_ENV := $(TOX_WORK_DIR)/django
 TOX_UTIL_ENV := $(TOX_WORK_DIR)/util
+TOX_TEST_ENV := $(TOX_WORK_DIR)/testing
 
 DEVELOPMENT_REQUIREMENTS := requirements/common.txt requirements/coverage.txt requirements/development.txt
 UTIL_REQUIREMENTS := requirements/coverage.txt requirements/util.txt
@@ -28,6 +29,40 @@ UTIL_REQUIREMENTS := requirements/coverage.txt requirements/util.txt
 MAKEFLAGS += --no-print-directory
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
+
+
+## Remove temporary files
+## @category Utility
+clean :
+	rm -rf docs/build/*
+	rm -rf dist
+	find . -iname ".coverage*" -delete
+	find . -iname "*.pyc" -delete
+	find . -iname "__pycache__" -delete
+	find . -iname ".coverage.*" -delete
+.PHONY : clean
+
+
+## Run tests to collect and show coverage information
+## @category Development
+dev/coverage : clean dev/test
+	- tox -q -e util -- coverage combine
+	tox -q -e util -- coverage report
+.PHONY : dev/coverage
+
+test_command ?= ""
+## Run the test suite
+## @category Development
+dev/test : $(TOX_TEST_ENV)
+	tox -q -e testing -- $(test_command)
+.PHONY : dev/test
+
+test_tag ?= "current"
+## Run only tests with a specific tag ("current" by default)
+## @category Development
+dev/test/tag :
+	$(MAKE) dev/test test_command="-t $(test_tag)"
+.PHONY : dev/test/tag
 
 
 # ### Django management commands
@@ -163,6 +198,9 @@ $(TOX_DJANGO_ENV) : $(DEVELOPMENT_REQUIREMENTS) pyproject.toml
 
 $(TOX_UTIL_ENV) : $(UTIL_REQUIREMENTS) pyproject.toml .pre-commit-config.yaml
 	tox --recreate -e util
+
+$(TOX_TEST_ENV) : $(DEVELOPMENT_REQUIREMENTS) pyproject.toml
+	tox --recreate -e testing
 
 
 # fancy colors

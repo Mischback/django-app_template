@@ -13,10 +13,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 # Python imports
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# Add PROJECT_ROOT to Python path
+sys.path.append(str(BASE_DIR))
 
 
 # Quick-start development settings - unsuitable for production
