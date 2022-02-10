@@ -7,7 +7,7 @@ development-specific values.
 """
 
 # app imports
-from tests.util.settings import *  # noqa: F403
+from tests.util.settings_test import *  # noqa: F403
 
 # Enable Django's DEBUG mode
 DEBUG = True
@@ -25,7 +25,7 @@ MIDDLEWARE += [  # noqa: F405
 ]
 
 # development specific extensions for the minimal setup
-ROOT_URLCONF = "dev_env.urls"
+ROOT_URLCONF = "tests.util.urls_dev"
 
 DATABASES = {
     "default": {

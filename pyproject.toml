@@ -33,7 +33,6 @@ name = "t3mpl4t3"
 exclude = [
   ".github/",
   ".vscode/",
-  "dev_env",
   "docs/",
   "requirements/",
   "tests/",
@@ -156,7 +155,7 @@ setenv =
   PYTHONDONTWRITEBYTECODE=1
 skip_install = true
 commands =
-  django-admin {posargs:version} --settings=dev_env.settings --pythonpath=./
+  django-admin {posargs:version} --settings=tests.util.settings_dev --pythonpath=./
 
 [testenv:djangosuperuser]
 basepython = {[testenv:django]basepython}
