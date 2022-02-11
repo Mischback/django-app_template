@@ -116,7 +116,7 @@ django/makemessages :
 ## "$ django-admin makemigrations"; create migrations
 ## @category Django
 django/makemigrations :
-	$(MAKE) django django_command="makemigrations calingen"
+	$(MAKE) django django_command="makemigrations t3mpl4t3"
 .PHONY : django/makemigrations
 
 ## "$ django-admin migrate"; apply the project's migrations
