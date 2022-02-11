@@ -33,6 +33,27 @@ MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
 
+## Shortcut
+## @category Development
+run: django/runserver
+.PHONY : run
+
+## Shortcut
+## @category Development
+doc: sphinx/serve/html
+.PHONY : doc
+
+## Shortcut
+## @category Development
+test: dev/test
+.PHONY : test
+
+## Shortcut
+## @category Development
+coverage: dev/coverage
+.PHONY : coverage
+
+
 ## Remove temporary files
 ## @category Utility
 clean :
