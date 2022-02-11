@@ -54,7 +54,8 @@ source = [
 omit = [
   "*/__init__.py",
   "*/migrations/*",
-  "*/tests/runtests.py"
+  "*/tests/runtests.py",
+  "*/tests/util/*"
 ]
 parallel = true
 
