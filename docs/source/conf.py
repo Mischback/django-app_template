@@ -146,7 +146,10 @@ extlinks = {
     "issue": ("https://github.com/mischback/django-t3mpl4t3/issues/%s", "issue %s"),
     # A file or directory. GitHub redirects from blob to tree if needed.
     # will show file/path relative to root-directory of the repository
-    "source": ("https://github.com/mischback/django-t3mpl4t3/blob/development/%s", "%s"),
+    "source": (
+        "https://github.com/mischback/django-t3mpl4t3/blob/development/%s",
+        "%s",
+    ),
     # also available by intersphinx :django:doc:
     "djangodoc": ("https://docs.djangoproject.com/en/{}/%s".format(django_version), ""),
     # also available by intersphinx (most likely as simple as specifying the full Python path)
