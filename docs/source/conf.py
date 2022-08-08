@@ -151,7 +151,10 @@ extlinks = {
         "%s",
     ),
     # also available by intersphinx :django:doc:
-    "djangodoc": ("https://docs.djangoproject.com/en/{}/%s".format(django_version), ""),
+    "djangodoc": (
+        "https://docs.djangoproject.com/en/{}/%s".format(django_version),
+        "%s",
+    ),
     # also available by intersphinx (most likely as simple as specifying the full Python path)
     "djangoapi": (
         "https://docs.djangoproject.com/en/{}/ref/%s".format(django_version),
