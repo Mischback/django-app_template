@@ -141,21 +141,21 @@ def _add_django_roles(app):  # type: ignore[no-untyped-def]
 # ##### extlinks
 extlinks = {
     # will show commit's SHA1
-    "commit": ("https://github.com/mischback/django-t3mpl4t3/commit/%s", ""),
+    "commit": ("https://github.com/mischback/django-t3mpl4t3/commit/%s", "%s"),
     # will show "issue [number]"
-    "issue": ("https://github.com/mischback/django-t3mpl4t3/issues/%s", "issue "),
+    "issue": ("https://github.com/mischback/django-t3mpl4t3/issues/%s", "issue %s"),
     # A file or directory. GitHub redirects from blob to tree if needed.
     # will show file/path relative to root-directory of the repository
-    "source": ("https://github.com/mischback/django-t3mpl4t3/blob/development/%s", ""),
+    "source": ("https://github.com/mischback/django-t3mpl4t3/blob/development/%s", "%s"),
     # also available by intersphinx :django:doc:
     "djangodoc": ("https://docs.djangoproject.com/en/{}/%s".format(django_version), ""),
     # also available by intersphinx (most likely as simple as specifying the full Python path)
     "djangoapi": (
         "https://docs.djangoproject.com/en/{}/ref/%s".format(django_version),
-        "",
+        "%s",
     ),
     # will show "Wikipedia: [title]"
-    "wiki": ("https://en.wikipedia.org/wiki/%s", "Wikipedia: "),
+    "wiki": ("https://en.wikipedia.org/wiki/%s", "Wikipedia: %s"),
 }
 
 # ### HTML Output
